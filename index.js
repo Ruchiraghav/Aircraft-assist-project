@@ -1,3 +1,4 @@
+//ok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
 const Alert = require('./models/Alert');
 const MissingReport = require('./models/MissingReport');
 
@@ -51,6 +52,17 @@ app.post('/api/checkin', async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
+// 📥 GET all check-in data
+app.get('/api/checkin', async (req, res) => {
+  try {
+    const checkins = await Checkin.find(); // Fetches all check-in entries from MongoDB
+    res.json(checkins); // Sends them as JSON response
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 
 app.post('/api/alert', async (req, res) => {
   try {
