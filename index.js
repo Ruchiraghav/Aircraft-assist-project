@@ -2,9 +2,6 @@
 const Alert = require('./models/Alert');
 const MissingReport = require('./models/MissingReport');
 const cron = require('node-cron');
-
-
-
 const express = require('express');
 const mongoose = require('mongoose');
 const Checkin = require('./models/Checkin'); // <-- Make sure this file exists
@@ -150,6 +147,9 @@ mongoose.connect("mongodb+srv://agarwalrichu3:ruchi123@cluster0.zhhca1i.mongodb.
     console.error("❌ MongoDB Connection Failed:", err);
   });
 
+//chatbot
+  const chatbotRoutes = require('./chatbot');
+app.use('/', chatbotRoutes);
 
 // 🚀 Start the server
 app.listen(PORT, () => {
