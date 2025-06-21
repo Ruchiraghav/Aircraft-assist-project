@@ -1,6 +1,8 @@
 //ok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
 const Alert = require('./models/Alert');
 const MissingReport = require('./models/MissingReport');
+const cron = require('node-cron');
+
 
 
 const express = require('express');
@@ -122,6 +124,22 @@ app.get('/track/:flightId', (req, res) => {
     res.status(404).json({ message: "Flight not found" });
   }
 });
+// 🚨 Simulate Crash Alert Every 1 Minute
+cron.schedule('* * * * *', async () => {
+  try {
+    const fakeAlert = new Alert({
+      flightId: 'AI999',
+      message: '⚠️ Emergency! Possible crash detected.',
+      severity: 'high',
+      time: new Date()
+    });
+    await fakeAlert.save();
+    console.log('🔔 Simulated crash alert inserted');
+  } catch (err) {
+    console.error('❌ Failed to insert crash alert:', err.message);
+  }
+});
+
 
 // 🔗 MongoDB Connection
 mongoose.connect("mongodb+srv://agarwalrichu3:ruchi123@cluster0.zhhca1i.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
@@ -131,6 +149,7 @@ mongoose.connect("mongodb+srv://agarwalrichu3:ruchi123@cluster0.zhhca1i.mongodb.
   .catch((err) => {
     console.error("❌ MongoDB Connection Failed:", err);
   });
+
 
 // 🚀 Start the server
 app.listen(PORT, () => {
